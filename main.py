@@ -1,28 +1,34 @@
-import cv2 as cv
+from keras.models import load_model
+from model import predict
 from time import sleep
-from model.py import predict
+import cv2 as opencv
+import numpy
+import os
 
-def move():
-    print("move")
+model = load_model('models/model.h5')
+labels = {0:'cardboard', 1:'glass', 2:'metal', 3:'paper', 4:'plastic', 5:'trash'}
 
-def direct():
-    print("direct")
+# arduino-cli compile --fqbn arduino:samd:mkr1000 MyFirstSketch
+def direct(prediction):
+    print("connect")
 
-def classify():
-    print("classify")
+def predict(image):
+    return model.predict(numpy.expand_dims(image,axis=0))
 
 def capture():
-    camera = cv.VideoCapture(0)
-    _, X = camera.read()
-    X = cv.resize(X, (300, 300))
+    camera = opencv.VideoCapture(0)
+    _, image = camera.read()
+    image = opencv.resize(image, (300, 300))
     camera.release()
-    return X
+    return image
 
 def loop():
     try:
         while True:
             sleep(3)
-            predict(capture())
+            image = capture()
+            prediction = predict(image)
+            direct(prediction)
     except KeyboardInterrupt:
         return
 
