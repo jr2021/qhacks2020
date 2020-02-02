@@ -5,12 +5,12 @@ int stepCount = 0;  // number of steps the motor has taken
 
 void setup() {
   // initialize the stepper library on pins 8 through 11:
-  iteratesecond(3, 4);
-  iteratefirst(10, 13);
+  iteratesecond(10, 13);
+  iteratefirst(3, 4);
   delay(2000);
   //
-  iteratesecond(4, 3);
-  iteratefirst(13, 10);
+  iteratesecond(13, 10);
+  iteratefirst(4, 3);
 }
 
 void iteratefirst(int Aplus, int Aminus) {
