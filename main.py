@@ -8,9 +8,10 @@ import os
 model = load_model('models/model.h5')
 labels = {0:'cardboard', 1:'glass', 2:'metal', 3:'paper', 4:'plastic', 5:'trash'}
 
-# arduino-cli compile --fqbn arduino:samd:mkr1000 MyFirstSketch
 def direct(prediction):
-    print("connect")
+    os.system('arduino-cli compile --fqbn arduino:avr:mega ' + prediction)
+    os.system('arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:mega ' + prediction)
+    sleep(3)
 
 def predict(image):
     return model.predict(numpy.expand_dims(image,axis=0))
