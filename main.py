@@ -9,6 +9,7 @@ learner = load_learner('models/')
 
 def predict(image):
     img = open_image('image.jpg')
+    print(learner.predict(img))
     return learner.predict(img) #FIXME
 
 def direct(prediction):
@@ -21,8 +22,10 @@ def capture():
     image = opencv.cvtColor(image, opencv.COLOR_BGR2RGB)
     opencv.imwrite("image.jpg", image)
 
+    plt.imshow(image)
+    plt.show()
     print('photo taken')
-    
+
     return image
 
 def loop():
