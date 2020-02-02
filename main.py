@@ -6,11 +6,19 @@ import os
 
 learner = load_learner('models/')
 
+labels = {
+    'cardboard':1,
+    'paper':1,
+    'metal':2,
+    'glass':2,
+    'plastic':3
+}
 
-def predict(image):
+def predict():
     img = open_image('image.jpg')
     print(learner.predict(img))
-    return learner.predict(img) #FIXME
+
+    return labels[str(learner.predict(img)[0])]
 
 def direct(prediction):
     os.system('arduino-cli compile --fqbn arduino:avr:mega /home/e7poon/jake/qhacks2020/sketches/' + prediction)
@@ -22,22 +30,16 @@ def capture():
     image = opencv.cvtColor(image, opencv.COLOR_BGR2RGB)
     opencv.imwrite("image.jpg", image)
 
-    plt.imshow(image)
-    plt.show()
     print('photo taken')
 
     return image
 
 def loop():
-    try:
-        while True:
-            sleep(3)
-            preds = predict(capture())
-            direct('blink')
-            sleep(3)
-    except KeyboardInterrupt:
-        return
+    capture()
+    prediction = str(predict())
+    direct(prediction)
 
 def main():
     loop()
+
 main()
